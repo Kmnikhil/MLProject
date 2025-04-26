@@ -2,10 +2,12 @@ import os
 import sys
 import pandas as pd
 
-from src.exception import CustomException
-from src.logger import logging
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+
+from src.exception import CustomException
+from src.logger import logging
+from src.components.data_transformation import DataTransformation
 
 @dataclass
 class DataIngestionConfig:
@@ -23,6 +25,9 @@ class DataIngestion:
         try:
             df = pd.read_csv(r"D:\Works\ML_Project\MLProject\notebook\data\studs_perfms.csv")
             logging.info("Read the dataset as dataframe")
+
+            df.columns = [col.lower().replace(" ", "_").replace("/", "_") for col in df.columns]
+            logging.info("Rename the columns")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
@@ -45,4 +50,7 @@ class DataIngestion:
 
 if __name__ == "__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()                    
+    train_path,test_path = obj.initiate_data_ingestion()                    
+
+    data_transformation = DataTransformation()
+    train_data,test_data,preprocessor_path = data_transformation.data_transformation_initiate(train_path,test_path)

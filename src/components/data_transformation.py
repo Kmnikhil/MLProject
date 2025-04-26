@@ -11,11 +11,11 @@ from sklearn.preprocessing import StandardScaler,OneHotEncoder
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import saved_object
+from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
-    processor_obj_file_path = os.path.join('my_files',"processor.pkl")
+    processor_obj_file_path = os.path.join('my_files',"preprocessor.pkl")
 
 class DataTransformation:
     def __init__(self):
@@ -86,7 +86,7 @@ class DataTransformation:
             transformed_train_data = np.c_[transformed_in_fea_train,np.array(tar_fea_train)]
             transformed_test_data = np.c_[transformed_in_fea_test,np.array(tar_fea_test)]
 
-            saved_object(
+            save_object(
                 file_path=self.data_transformation_config.processor_obj_file_path,
                 obj=processor_obj
             )

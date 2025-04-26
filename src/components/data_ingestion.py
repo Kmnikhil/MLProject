@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from src.exception import CustomException
 from src.logger import logging
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -54,3 +55,7 @@ if __name__ == "__main__":
 
     data_transformation = DataTransformation()
     train_data,test_data,preprocessor_path = data_transformation.data_transformation_initiate(train_path,test_path)
+
+    model = ModelTrainer()
+    predicted_result = model.initiate_model_trainer(train_data,test_data)
+    print(predicted_result)
